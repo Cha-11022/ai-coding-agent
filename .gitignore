@@ -21,6 +21,8 @@ launcher/backend-test.js
 launcher/self-test.js
 launcher/full-test.js
 launcher/share-test.js
+launcher/main.js
+launcher/package-lock.json
 
 # Python cache
 __pycache__/
@@ -28,8 +30,13 @@ __pycache__/
 
 # Electron
 app/electron/node_modules/
+app/electron/dist/
 app/backend/node_modules/
 app/frontend/node_modules/
+
+# Runtime data files
+workspace_state/snapshots.json
+start.bat
 
 # IDE
 .idea/
