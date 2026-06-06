@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build output
+app/backend/dist/
+app/frontend/dist/
+
+# Runtime data
+sessions/
+logs/
+.snapshots/
+*.log
+
+# Test artifacts
+tests/calculator_test/
+tests/self_test/
+tests/shared_calculator/
+
+# Launcher test scripts
+launcher/backend-test.js
+launcher/self-test.js
+launcher/full-test.js
+launcher/share-test.js
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Electron
+app/electron/node_modules/
+app/backend/node_modules/
+app/frontend/node_modules/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Environment
+.env

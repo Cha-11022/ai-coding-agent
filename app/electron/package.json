@@ -1,0 +1,17 @@
+{
+  "name": "@claude-agent/electron",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "tsc && electron dist/main.js",
+    "build": "tsc",
+    "start": "electron dist/main.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "electron": "^28.3.3",
+    "typescript": "^5.3.0"
+  }
+}

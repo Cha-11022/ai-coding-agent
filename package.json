@@ -1,0 +1,15 @@
+{
+  "name": "claude-ai-coding-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Claude AI Coding Agent - AI-powered coding assistant desktop app",
+  "scripts": {
+    "dev": "cd app && npm run build:backend && npm run build:frontend && npm run start",
+    "build": "cd app && npm run build:backend && npm run build:frontend && npm run build:electron",
+    "start": "cd app && npm run start",
+    "install:all": "cd app && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

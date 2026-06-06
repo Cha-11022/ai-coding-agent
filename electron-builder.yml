@@ -1,0 +1,56 @@
+appId: com.claude-ai-coding-agent.app
+productName: Claude AI Coding Agent
+directories:
+  output: dist
+  app: app/electron
+
+files:
+  - main.js
+  - preload.js
+  - "!node_modules"
+
+extraResources:
+  - from: "app/backend"
+    to: "backend"
+    filter:
+      - "**/*"
+  - from: "src"
+    to: "src"
+    filter:
+      - "**/*"
+  - from: "."
+    to: "root"
+    filter:
+      - "*.py"
+      - "requirements.txt"
+      - "sessions/**"
+      - "logs/**"
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: app/electron/icon.png
+  artifactName: "${productName}-Setup-${version}.${ext}"
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Claude AI Coding Agent
+
+mac:
+  target:
+    - dmg
+  icon: app/electron/icon.png
+  category: public.app-category.developer-tools
+
+linux:
+  target:
+    - AppImage
+    - deb
+  icon: app/electron/icon.png
+  category: Development
