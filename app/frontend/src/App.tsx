@@ -11,6 +11,7 @@ import NewSessionModal from './components/NewSessionModal';
 import SessionsListModal from './components/SessionsListModal';
 import LanguageToggle from './components/LanguageToggle';
 import SettingsModal from './components/SettingsModal';
+import ApprovalDialog from './components/ApprovalDialog';
 import type { ConversationMessage } from './types';
 import './styles/App.css';
 
@@ -48,8 +49,8 @@ export default function App() {
   const { t } = useI18n();
   const { sessions, fetchSessions, createSession: hookCreate, deleteSession: hookDelete, continueSession: hookContinue } = useSessions();
   const {
-    messages, loading, activeSession,
-    setActiveSession, sendMessage: hookSend, setInitialMessages, clearMessages,
+    messages, loading, pendingSteps, approvalLoading, activeSession,
+    setActiveSession, sendMessage: hookSend, approveAction, rejectAction, setInitialMessages, clearMessages,
   } = useChat();
 
   const [status, setStatus] = useState<{ status: string; mode?: string }>({ status: 'checking' });
@@ -304,6 +305,14 @@ export default function App() {
       )}
       {showSettings && (
         <SettingsModal onClose={() => setShowSettings(false)} />
+      )}
+      {pendingSteps && (
+        <ApprovalDialog
+          steps={pendingSteps as Array<{ description?: string; type?: string; files?: string[]; command?: string; danger_level?: number }>}
+          onApprove={approveAction}
+          onReject={rejectAction}
+          loading={approvalLoading}
+        />
       )}
     </div>
   );

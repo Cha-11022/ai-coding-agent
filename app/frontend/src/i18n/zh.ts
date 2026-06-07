@@ -103,4 +103,18 @@ export default {
   ok: '确定',
   cancel: '取消',
   delete: '删除',
+
+  // Approval Dialog
+  approvalTitle: '操作确认',
+  approvalDesc: 'AI 请求执行以下操作：',
+  approvalExecute: '执行',
+  approvalExecuting: '执行中...',
+  approvalUnknownStep: '未知操作',
+  approvalDanger: '⚠️ 高风险操作',
+
+  // Settings Permission
+  settingsPermission: '权限等级',
+  settingsPermissionFull: '完全访问（自动执行）',
+  settingsPermissionDefault: '默认（执行前询问）',
+  settingsPermissionReadonly: '只读（禁止修改文件）',
 };

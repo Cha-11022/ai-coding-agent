@@ -2,11 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { SESSIONS_DIR } from '../config';
-import {
-  SessionData,
-  SessionListItem,
-  ConversationTurn,
-} from '../types';
+import { SessionData, SessionListItem, ConversationTurn, TaskPlan, PermissionLevel } from '../types';
 import { defaultLogger } from './logger';
 
 class SessionContext {
@@ -19,6 +15,8 @@ class SessionContext {
   file_snapshots: Record<string, string>;
   modified_files: string[];
   deleted_files: string[];
+  pending_plan: TaskPlan | null;
+  permission_level: PermissionLevel;
 
   constructor(session_id: string, task_description: string, project_dir: string = '.') {
     this.session_id = session_id;
@@ -30,6 +28,8 @@ class SessionContext {
     this.file_snapshots = {};
     this.modified_files = [];
     this.deleted_files = [];
+    this.pending_plan = null;
+    this.permission_level = 'default';
   }
 
   addTurn(userInput: string): ConversationTurn {
@@ -49,6 +49,10 @@ class SessionContext {
     return turn;
   }
 
+  getLastTurn(): ConversationTurn | null {
+    return this.turns.length > 0 ? this.turns[this.turns.length - 1] : null;
+  }
+
   getConversationHistory(): string {
     if (this.turns.length === 0) return '';
     const history: string[] = [];
@@ -60,7 +64,7 @@ class SessionContext {
         history.push(`[Turn ${turn.turn_num}] AI Plan: ${descs.join(', ')}`);
       }
       if (turn.execution_results && turn.execution_results.status === 'success') {
-        history.push(`[Turn ${turn.turn_num}] Result: ✓ Success`);
+        history.push(`[Turn ${turn.turn_num}] Result: OK Success`);
       } else if (turn.errors.length > 0) {
         history.push(`[Turn ${turn.turn_num}] Error: ${turn.errors.join('; ')}`);
       }
@@ -79,6 +83,8 @@ class SessionContext {
       file_snapshots: this.file_snapshots,
       modified_files: this.modified_files,
       deleted_files: this.deleted_files,
+      permission_level: this.permission_level,
+      pending_plan: this.pending_plan,
     };
   }
 
@@ -90,6 +96,8 @@ class SessionContext {
     session.file_snapshots = data.file_snapshots || {};
     session.modified_files = data.modified_files || [];
     session.deleted_files = data.deleted_files || [];
+    session.pending_plan = data.pending_plan || null;
+    session.permission_level = data.permission_level || 'default';
     return session;
   }
 }

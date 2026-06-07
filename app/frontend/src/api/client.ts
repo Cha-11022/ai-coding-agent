@@ -54,10 +54,22 @@ export async function deleteSession(sessionId: string) {
   return data;
 }
 
-export async function sendMessage(sessionId: string, message: string) {
-  const { data } = await api.post('/api/conversation/send', {
+export async function sendMessage(sessionId: string, message: string, permissionLevel?: string) {
+  const data = { session_id: sessionId, message };
+  if (permissionLevel) Object.assign(data, { permission_level: permissionLevel });
+  const { data: res } = await api.post('/api/conversation/send', data);
+  return res;
+}
+
+export async function approvePlan(sessionId: string) {
+  const { data } = await api.post('/api/conversation/approve', { session_id: sessionId });
+  return data;
+}
+
+export async function setPermissionLevel(sessionId: string, permissionLevel: string) {
+  const { data } = await api.post('/api/conversation/permission', {
     session_id: sessionId,
-    message: message,
+    permission_level: permissionLevel,
   });
   return data;
 }

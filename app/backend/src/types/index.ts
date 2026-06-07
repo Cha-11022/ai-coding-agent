@@ -38,6 +38,8 @@ export interface SessionData {
   file_snapshots: Record<string, string>;
   modified_files: string[];
   deleted_files: string[];
+  permission_level: PermissionLevel;
+  pending_plan: TaskPlan | null;
 }
 
 export interface SessionListItem {
@@ -61,6 +63,8 @@ export interface TaskPlan {
 
 // ©¤©¤©¤ API Request/Response ©¤©¤©¤
 
+export type PermissionLevel = 'full' | 'default' | 'readonly';
+
 export interface CreateSessionRequest {
   task_description: string;
   project_dir?: string;
@@ -77,6 +81,11 @@ export interface DeleteSessionRequest {
 export interface SendMessageRequest {
   session_id: string;
   message: string;
+  permission_level?: PermissionLevel;
+}
+
+export interface ApproveRequest {
+  session_id: string;
 }
 
 export interface SetApiKeyRequest {

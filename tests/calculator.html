@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简易计算器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .calculator {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            padding: 24px;
+            width: 320px;
+        }
+        .display {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            text-align: right;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            word-break: break-all;
+        }
+        .display .expression {
+            font-size: 18px;
+            color: #6c757d;
+            min-height: 28px;
+        }
+        .display .result {
+            font-size: 32px;
+            font-weight: 600;
+            color: #212529;
+            margin-top: 4px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        button {
+            padding: 16px;
+            font-size: 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: #f0f2f5;
+            color: #212529;
+        }
+        button:hover {
+            background: #e2e6ea;
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .operator {
+            background: #e7f0ff;
+            color: #0d6efd;
+        }
+        .operator:hover {
+            background: #d0e2ff;
+        }
+        .equals {
+            background: #0d6efd;
+            color: #fff;
+            grid-column: span 2;
+        }
+        .equals:hover {
+            background: #0b5ed7;
+        }
+        .clear {
+            background: #fce4e4;
+            color: #dc3545;
+        }
+        .clear:hover {
+            background: #f9d0d0;
+        }
+        .backspace {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .backspace:hover {
+            background: #ffe69c;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display">
+            <div class="expression" id="expression"></div>
+            <div class="result" id="result">0</div>
+        </div>
+        <div class="buttons">
+            <button class="clear" onclick="clearAll()">C</button>
+            <button class="backspace" onclick="backspace()">⌫</button>
+            <button class="operator" onclick="appendOperator('%')">%</button>
+            <button class="operator" onclick="appendOperator('/')">÷</button>
+
+            <button onclick="appendNumber('7')">7</button>
+            <button onclick="appendNumber('8')">8</button>
+            <button onclick="appendNumber('9')">9</button>
+            <button class="operator" onclick="appendOperator('*')">×</button>
+
+            <button onclick="appendNumber('4')">4</button>
+            <button onclick="appendNumber('5')">5</button>
+            <button onclick="appendNumber('6')">6</button>
+            <button class="operator" onclick="appendOperator('-')">−</button>
+
+            <button onclick="appendNumber('1')">1</button>
+            <button onclick="appendNumber('2')">2</button>
+            <button onclick="appendNumber('3')">3</button>
+            <button class="operator" onclick="appendOperator('+')">+</button>
+
+            <button onclick="appendNumber('0')">0</button>
+            <button onclick="appendDot()">.</button>
+            <button class="equals" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let expression = '';
+        let result = '0';
+
+        function updateDisplay() {
+            document.getElementById('expression').textContent = expression;
+            document.getElementById('result').textContent = result;
+        }
+
+        function appendNumber(num) {
+            expression += num;
+            updateDisplay();
+        }
+
+        function appendOperator(op) {
+            if (expression === '' && op === '-') {
+                expression += op;
+            } else if (expression !== '') {
+                const lastChar = expression.slice(-1);
+                if ('+-*/%'.includes(lastChar)) {
+                    expression = expression.slice(0, -1) + op;
+                } else {
+                    expression += op;
+                }
+            }
+            updateDisplay();
+        }
+
+        function appendDot() {
+            const parts = expression.split(/[+\-*/%]/);
+            const lastPart = parts[parts.length - 1];
+            if (!lastPart.includes('.')) {
+                expression += '.';
+            }
+            updateDisplay();
+        }
+
+        function backspace() {
+            expression = expression.slice(0, -1);
+            updateDisplay();
+        }
+
+        function clearAll() {
+            expression = '';
+            result = '0';
+            updateDisplay();
+        }
+
+        function calculate() {
+            try {
+                if (expression === '') {
+                    result = '0';
+                } else {
+                    // 替换显示符号为JS可计算的符号
+                    let calcExpr = expression.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+                    const evalResult = Function('"use strict"; return (' + calcExpr + ')')();
+                    if (isFinite(evalResult)) {
+                        result = evalResult.toString();
+                    } else {
+                        result = '错误';
+                    }
+                }
+            } catch (e) {
+                result = '错误';
+            }
+            updateDisplay();
+        }
+    </script>
+</body>
+</html>

@@ -103,4 +103,18 @@ export default {
   ok: 'OK',
   cancel: 'Cancel',
   delete: 'Delete',
+
+  // Approval Dialog
+  approvalTitle: 'Confirm Operation',
+  approvalDesc: 'AI requests to perform the following operations:',
+  approvalExecute: 'Execute',
+  approvalExecuting: 'Executing...',
+  approvalUnknownStep: 'Unknown operation',
+  approvalDanger: '⚠️ High Risk Operation',
+
+  // Settings Permission
+  settingsPermission: 'Permission Level',
+  settingsPermissionFull: 'Full Access (auto-execute)',
+  settingsPermissionDefault: 'Default (ask before execution)',
+  settingsPermissionReadonly: 'Read Only (no file modifications)',
 };

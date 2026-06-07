@@ -3,7 +3,7 @@ chcp 65001 >nul
 title AI Coding Agent
 
 :: ====== SET API KEY ======
-set DEEPSEEK_API_KEY=sk-df041fa594334581bd121908beca6585
+set DEEPSEEK_API_KEY=sk-d7e5785531a349eb8fdbf5a73ae85086
 set API_PROVIDER=deepseek
 set NODE_OPTIONS=
 
